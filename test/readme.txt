@@ -1,1 +1,0 @@
-Note: This is a directory for writing test files.

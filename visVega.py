@@ -4,7 +4,7 @@ from ladybug.analysisperiod import AnalysisPeriod
 import googlemaps
 import json
 import pandas as pd
-from altair import Row, Column, Chart, Text
+from altair import Row, Column, Chart, Text, Color, Scale
 
 ap = AnalysisPeriod()
 
@@ -32,10 +32,12 @@ data['temp'] = data['temp'].astype('float64')
 chart = Chart(data).mark_text(
                applyColorToBackground=True,
            ).encode(
-               row=Row('dt:T', timeUnit='month'),
-               column=Column('dt:T', timeUnit='hours'),
+               row=Row('dt:T', timeUnit='hours'),
+               column=Column('dt:T', timeUnit='month'),
                text='temp',
-               color='temp'
+               color=Color('temp',
+                    scale=Scale(range='BlueOrange')
+                )
            ).configure_scale(
                textBandWidth=30,
                bandSize=15

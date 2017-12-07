@@ -32,7 +32,7 @@ chart = Chart(data).mark_text(
                column=Column('dt:T', timeUnit='month'),
                text='temp',
                color=Color('temp',
-                    scale=Scale(range='blueorange')
+                    scale=Scale(range=["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"])
                 )
            ).configure_scale(
                textBandWidth=30,

@@ -43839,22 +43839,27 @@
     }, 
     "encoding": {
         "color": {
-            "field": "temp", 
+            "bin": {
+                "step": 5.0, 
+                "maxbins": 10.0
+            }, 
+            "clamp": true, 
             "scale": {
                 "range": [
-                    "#67001f", 
-                    "#b2182b", 
-                    "#d6604d", 
-                    "#f4a582", 
-                    "#fddbc7", 
-                    "#d1e5f0", 
-                    "#92c5de", 
-                    "#4393c3", 
+                    "#053061", 
                     "#2166ac", 
-                    "#053061"
+                    "#4393c3", 
+                    "#92c5de", 
+                    "#d1e5f0", 
+                    "#fddbc7", 
+                    "#f4a582", 
+                    "#d6604d", 
+                    "#b2182b", 
+                    "#67001f"
                 ]
             }, 
-            "type": "quantitative"
+            "type": "nominal", 
+            "field": "temp"
         }, 
         "text": {
             "field": "blanks", 

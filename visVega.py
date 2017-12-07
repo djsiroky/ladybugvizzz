@@ -32,8 +32,8 @@ data['temp'] = data['temp'].astype('float64')
 chart = Chart(data).mark_text(
                applyColorToBackground=True,
            ).encode(
-               row='dt:T',
-               column='dt:T',
+               row=Row('dt:T', timeUnit='month'),
+               column=Column('dt:T', timeUnit='hours'),
                text='temp',
                color='temp'
            ).configure_scale(

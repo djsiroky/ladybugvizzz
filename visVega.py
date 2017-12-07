@@ -22,6 +22,7 @@ df['row'] = df['row'].astype('str')
 #print(df["row"].str.split(' at ', 1).tolist())
 data = pd.DataFrame(df.row.str.split(' at ',1).tolist(),
                                    columns = ['temp','dt'])
+data['blanks'] = ""
 
 data['dt'] = pd.to_datetime(data['dt'], format="%d %b %H:%M")
 data['temp'] = data['temp'].astype('float64')
@@ -30,7 +31,7 @@ chart = Chart(data).mark_text(
            ).encode(
                row=Row('dt:T', timeUnit='hours'),
                column=Column('dt:T', timeUnit='month'),
-               text='temp',
+               text=Text('blanks'),
                color=Color('temp',
                     scale=Scale(range=["#67001f","#b2182b","#d6604d","#f4a582","#fddbc7","#d1e5f0","#92c5de","#4393c3","#2166ac","#053061"])
                 )

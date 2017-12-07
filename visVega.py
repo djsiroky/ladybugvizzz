@@ -16,9 +16,6 @@ loc = geocode_result[0]["geometry"]["location"]
 
 wdd = returnWeatherDataDict(longitude=loc["lng"], latitude=loc["lat"])
 
-print((wdd["dryBulbTemperature"][0]))
-print(wdd.keys())
-
 df = pd.DataFrame({'row': wdd["dryBulbTemperature"]})
 df['row'] = df['row'].astype('str') 
 
@@ -26,7 +23,6 @@ df['row'] = df['row'].astype('str')
 data = pd.DataFrame(df.row.str.split(' at ',1).tolist(),
                                    columns = ['temp','dt'])
 
-print(data)
 data['dt'] = pd.to_datetime(data['dt'], format="%d %b %H:%M")
 data['temp'] = data['temp'].astype('float64')
 chart = Chart(data).mark_text(
@@ -36,7 +32,7 @@ chart = Chart(data).mark_text(
                column=Column('dt:T', timeUnit='month'),
                text='temp',
                color=Color('temp',
-                    scale=Scale(range='BlueOrange')
+                    scale=Scale(range='blueorange')
                 )
            ).configure_scale(
                textBandWidth=30,
@@ -45,5 +41,3 @@ chart = Chart(data).mark_text(
            
 chart.max_rows = 8761
 chart.savechart('plot.html')
-
-print(data["temp"])

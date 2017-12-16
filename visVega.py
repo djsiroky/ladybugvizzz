@@ -34,8 +34,8 @@ data['temp'] = data['temp'].astype('float64')
 data['temp'] = data['temp'].apply(f)
 json_filename = sys.argv[2] + '.json'
 csv_filename = sys.argv[2] + '.csv'
-#data.to_json(path_or_buf=json_filename, orient='split', date_format='iso')
-data.to_csv(path_or_buf=csv_filename)
+data.to_json(path_or_buf=json_filename, orient='records', date_format='iso')
+#data.to_csv(path_or_buf=csv_filename)
 
 colors =   ["#67001f",
             "#b2182b",

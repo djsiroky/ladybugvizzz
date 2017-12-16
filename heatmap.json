@@ -61,7 +61,7 @@
   "data": [
     {
       "name": "temperature",
-      "url": "plotsd.csv",
+      "url": "https://raw.githubusercontent.com/djsiroky/ladybugvizzz/master/plotsd.csv",
       "format": {"type": "csv", "parse": {"temp": "number", "dt": "date"}},
       "transform": [
         {"type": "formula", "as": "hour", "expr": "hours(datum.dt)"},

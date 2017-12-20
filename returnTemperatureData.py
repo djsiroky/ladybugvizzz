@@ -16,6 +16,7 @@ def lambda_handler(loc):
     gmaps = googlemaps.Client(key='AIzaSyC7ZVjH0QZbR3T96_GO25dcP-woiA4hrvI')
     # Geocode my hardcoded address
     geocode_result = gmaps.geocode(loc)
+    addr = geocode_result[0]["formatted_address"]
     loc = geocode_result[0]["geometry"]["location"]
     
     wdd = returnWeatherDataDict(longitude=loc["lng"], latitude=loc["lat"])
@@ -26,12 +27,12 @@ def lambda_handler(loc):
     data = pd.DataFrame(df.row.str.split(' at ',1).tolist(),
                                        columns = ['temp','dt'])
     
-    print("Is this getting logged?")
-    #data['dt'] = pd.to_datetime(data['dt'], format="%d %b %H:%M")
+    data['dt'] = pd.to_datetime(data['dt'], format="%d %b %H:%M")
     data['temp'] = data['temp'].astype('float64')
     data['temp'] = data['temp'].apply(f)
     #json_filename = sys.argv[2] + '.json'
     #csv_filename = sys.argv[2] + '.csv'
     j = data.to_json(orient='records')
+    r = dict(place=addr, data=j)
     #data.to_csv(path_or_buf=csv_filename)
-    return j 
+    return r

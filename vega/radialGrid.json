@@ -1,0 +1,130 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+  "width": 600,
+  "height": 600,
+
+  "data": [
+    {
+      "name": "table",
+      "values": [30, 12, 23, 47, 6, 52, 19],
+      "transform": [{"type": "pie", "field": "data"}]
+    },
+    {
+      "name": "ticks",
+      "values": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]      
+    },
+    {
+      "name": "angles",
+      "values": [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 
+                100, 110, 120, 130, 140, 150, 160, 170, 180,
+                190, 200, 210, 220, 230, 240, 250, 260, 270,
+                280, 290, 300, 310, 320, 330, 340, 350, 360],
+      "transform": [
+         {
+          "type": "formula",
+          "expr": "(datum + 270) % 360",
+          "as":   "angle"
+        },
+        {
+          "type": "formula",
+          "expr": "300 * cos(PI * datum.angle / 180)",
+          "as":   "x"
+        },
+        {
+          "type": "formula",
+          "expr": "300* sin(PI * datum.angle / 180)",
+          "as":   "y"
+        }
+        
+      ]
+    }
+  ],
+
+  "scales": [
+     {
+      "name": "ord", "type": "ordinal",
+      "range": "width", "round": false,
+      "domain": {"data": "angles", "field": "data"}
+    },
+    {
+      "name": "r",
+      "type": "sqrt",
+      "domain": {"data": "table", "field": "data"},
+      "zero": true,
+      "range": [20, 100]
+    },
+    {
+      "name": "radius",
+      "type": "sqrt",
+      "domain": {"data": "ticks", "field": "data"},
+      "zero": true,
+      "range": [0, 100]
+    }
+  ],
+
+  "marks": [
+    {
+      "type": "arc",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"field": {"group": "width"}, "mult": 0.5},
+          "y": {"field": {"group": "height"}, "mult": 0.5},
+          "startAngle": {"field": "startAngle"},
+          "endAngle": {"field": "endAngle"},
+          "innerRadius": {"value": 20},
+          "outerRadius": {"scale": "r", "field": "data"},
+          "stroke": {"value": "#fff"}
+        },
+        "update": {
+          "fill": {"value": "#ccc"}
+        },
+        "hover": {
+          "fill": {"value": "pink"}
+        }
+      }
+    },
+
+    {
+      "type": "text",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"field": {"group": "width"}, "mult": 0.5},
+          "y": {"field": {"group": "height"}, "mult": 0.5},
+          "radius": {"scale": "r", "field": "data", "offset": 8},
+          "theta": {"signal": "(datum.startAngle + datum.endAngle)/2"},
+          "fill": {"value": "#000"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "text": {"field": "data"}
+        }
+      }
+    },
+    {
+      "type": "arc",
+      "from": {"data": "ticks"},
+      "encode":{
+        "enter":{
+          "startAngle": {"value": 0},
+          "endAngle": {"value": 6.3},
+          "stroke": {"value": "#f00"},
+          "outerRadius": {"field": "data"}
+        }
+      }
+    },
+     {
+          "type": "line",
+          "from":{"data": "angles"},
+          "encode": {
+            "enter": {
+              "x": {"field":"x"},
+              "y": {"field":"y"},
+              "detail": {"scale": "ord", "field": "data"},
+              "stroke": {"value": "steelblue"},
+              "strokeWidth": {"value": 1.01}
+            }
+          }
+        }
+  ]
+}

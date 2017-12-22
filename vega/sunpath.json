@@ -1,0 +1,103 @@
+{
+    "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+    "width": 1232,
+    "height": 640,
+    "autosize": "none",
+  
+    "signals": [
+      {
+        "name": "type",
+        "value": "stereographic",
+        "bind": {
+          "input": "select",
+          "options": [
+            "albers",
+            "albersUsa",
+            "azimuthalEqualArea",
+            "azimuthalEquidistant",
+            "conicConformal",
+            "conicEqualArea",
+            "conicEquidistant",
+            "equirectangular",
+            "gnomonic",
+            "mercator",
+            "orthographic",
+            "stereographic",
+            "transverseMercator"
+          ]
+        }
+      }
+    ],
+  
+    "projections": [
+      {
+        "name": "projection",
+        "type": {"signal": "type"},
+        "scale": 200,
+        "rotate": [
+          0,
+          90,
+          0
+        ],
+        "center": [0, 0],
+        "clipAngle": 130,
+        "precision": 0.1,
+        "translate": [400, 200]
+      }
+    ],
+  
+    "data": [
+         {
+        "name": "graticule",
+        "transform": [
+          { "type": "graticule" },
+          { "type": "geopath", "projection": "projection" }
+        ]
+      },
+      {
+        "name": "sun",
+        "values": [
+          {"size": 10, "lon": 39.0839389, "lat": -94.5818676}, 
+          {"size": 100, "lon": 226.7, "lat": 11.4}
+          ],
+        "transform": [
+          {"type":"geopoint", "projection": "projection", "fields": ["lon", "lat"] }
+        ]
+      }
+    ],
+    "scales":[
+  
+    ],
+  
+    "marks": [
+      {
+        "type": "path",
+        "from": {"data": "graticule"},
+        "encode": {
+          "update": {
+            "strokeWidth": {"value": 1},
+            "stroke": {"value": "#ddd"},
+            "fill": {"value": null},
+            "path": {"field": "path"}
+          }
+        }
+      },
+     {
+        "name": "marks",
+        "type": "symbol",
+        "from": {"data": "sun"},
+        "encode": {
+          "update": {
+            "x": {"field": "x"},
+            "y": {"field": "y"},
+            "size": {"field": "size"},
+            "shape": {"value": "circle"},
+            "strokeWidth": {"value": 2},
+            "opacity": {"value": 1},
+            "stroke": {"value": "#4682b4"},
+            "fill": {"value": "transparent"}
+          }
+        }
+      }
+    ]
+  }

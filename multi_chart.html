@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.12.0/d3.min.js"></script>
+    <script src="https://vega.github.io/vega/vega.js"></script>
+</head>
+
+<body>
+    <div>
+        <label for="address">Search</label>
+        <input name="address"type="text"/>
+        <button onclick="search()">Search</button>
+        <select id="chartSelector"></select>
+    </div>
+    <div>
+        <div id="view" style="float:left;"></div>
+    </div>
+    <script>
+        const API_URL = "http://localhost:5000"
+        const API_ENDPOINTS = [
+            {"endpoint": "/temps", "recipeFile": "heatmap.json", "title": "Temperature Heatmap"},
+            {"endpoint": "/sunpath", "recipeFile": "sunpath.json", "title": "Sunpath Diagram"}
+        ]
+        let localDate = new Date();
+        const offset = 0 - localDate.getTimezoneOffset();
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+        
+        API_ENDPOINTS.forEach(item => 
+            {
+                let child = document.createElement('option', {value: item.recipeFile})
+                let text = document.createTextNode(item.title)
+                child.appendChild(text)
+                document.getElementById('chartSelector').appendChild(child)
+            }
+        )
+
+        document.getElementById('chartSelector').onchange=generateChart
+
+
+        function generateChart(event) {
+            let selected = event.target.options[event.target.selectedIndex].text
+            let chart = API_ENDPOINTS.find(item => item.title == selected)
+            console.log(chart)
+            vega.loader()
+                .load(chart.recipeFile)
+                .then(function(data) { 
+                    var d = JSON.parse(data);
+                    let i = d["data"].findIndex(x => x["name"] == "main")
+                    d["data"][i]["url"] = API_URL + chart.endpoint + '?loc=64108' 
+                    render(d);
+                });
+        }
+
+       
+            
+        render = function(spec) { 
+            new vega.View(vega.parse(spec))
+            .renderer('canvas')  // set renderer (canvas or svg)
+            .initialize("#view") // initialize view within parent DOM container
+            .hover()             // enable hover encode set processing
+            .run();
+        }
+
+        var init = getUrlParameter('loc')
+        console.log(init)
+        if (init) {
+            generateChart(init)
+        } else {
+            document.getElementById('view').innerText = "Use the search to look at temperature data!"
+        }
+
+        function search() {
+            generateChart(document.getElementsByName('address')[0].value)
+        }        
+        
+    </script>
+</body>
+</html>

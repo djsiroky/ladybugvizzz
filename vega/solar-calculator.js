@@ -21,7 +21,7 @@
             theta = solarDeclination(centuries),
             costheta = Math.cos(theta),
             sintheta = Math.sin(theta),
-            azimuth = ((date - d3.time.day.utc.floor(date)) / 864e5 * TWO_PI + equationOfTime(centuries) + lambda) % TWO_PI - PI,
+            azimuth = ((date - d3.utcDay.floor(date)) / 864e5 * TWO_PI + equationOfTime(centuries) + lambda) % TWO_PI - PI,
             zenith = Math.acos(Math.max(-1, Math.min(1, sinphi * sintheta + cosphi * costheta * Math.cos(azimuth)))),
             azimuthDenominator = cosphi * Math.sin(zenith);
   

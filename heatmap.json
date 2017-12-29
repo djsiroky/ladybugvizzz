@@ -59,6 +59,9 @@
   ],
 
   "data": [
+    { "name": "main",
+      "url": "null"
+    },
     {
       "name": "temperature",
       "url": "https://raw.githubusercontent.com/djsiroky/ladybugvizzz/master/plotsd.csv",

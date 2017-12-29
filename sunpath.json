@@ -39,6 +39,9 @@
   ],
 
   "data": [
+      { "name": "main",
+        "url": "null"
+       },
        {
       "name": "graticule",
       "transform": [
